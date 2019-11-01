@@ -13,33 +13,30 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements IUserService {
     @Autowired
     private UserMapper userMapper;
+
     @Override
     public ServerResponse<User> login(String username, String password) {
         int resultCount = userMapper.checkUsername(username);
-        if (resultCount==0)
-        {
+        if (resultCount == 0) {
             return ServerResponse.createByErrorMessage("用户名不存在");
         }
         //todo 密码登陆MD5
 
-        User user = userMapper.selectLogin(username,password);
-        if (user==null)
-        {
+        User user = userMapper.selectLogin(username, password);
+        if (user == null) {
             return ServerResponse.createByErrorMessage("密码错误");
         }
         user.setPassword(StringUtils.EMPTY);
-        return ServerResponse.createBySuccess("登陆成功",user);
+        return ServerResponse.createBySuccess("登陆成功", user);
     }
-    public ServerResponse<String> register(User user)
-    {
+
+    public ServerResponse<String> register(User user) {
         int resultCount = userMapper.checkUsername(user.getUsername());
-        if (resultCount>0)
-        {
+        if (resultCount > 0) {
             return ServerResponse.createByErrorMessage("用户名已存在");
         }
-        resultCount =userMapper.checkEmail(user.getEmail());
-        if (resultCount>0)
-        {
+        resultCount = userMapper.checkEmail(user.getEmail());
+        if (resultCount > 0) {
             return ServerResponse.createByErrorMessage("Eamil已存在");
         }
         user.setRole(Const.Role.ROLE_CUSTOMER);
