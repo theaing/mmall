@@ -112,7 +112,7 @@ public class UserServiceImpl implements IUserService {
             String md5Passwor = MD5Util.MD5EncodeUtf8(passwordNew);
             int rowCount = userMapper.updatePasswordByUsername(username, md5Passwor);
             if (rowCount > 0) {
-                ServerResponse.createBySuccessMessage("密码修改成功");
+                return ServerResponse.createBySuccessMessage("密码修改成功");
             }
         } else {
             return ServerResponse.createByErrorMessage("token错误，需重新获取重制密码的token");
