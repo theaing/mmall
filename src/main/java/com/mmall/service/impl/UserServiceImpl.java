@@ -137,7 +137,7 @@ public class UserServiceImpl implements IUserService {
     public ServerResponse<User> updateUserInfomation(User user) {
         int resultCount = userMapper.checkEmailByUserId(user.getEmail(), user.getId());
         if (resultCount > 0) {
-           return ServerResponse.createBySuccessMessage("Eamil:" + user.getEmail() + " 已存在");
+            return ServerResponse.createBySuccessMessage("Eamil:" + user.getEmail() + " 已存在");
         }
         User updateUser = new User();
         updateUser.setId(user.getId());
@@ -147,7 +147,7 @@ public class UserServiceImpl implements IUserService {
         updateUser.setAnswer(user.getAnswer());
         int updateCount = userMapper.updateByPrimaryKeySelective(updateUser);
         if (updateCount > 0) {
-           return ServerResponse.createBySuccess("用户信息更新成功", updateUser);
+            return ServerResponse.createBySuccess("用户信息更新成功", updateUser);
         }
         return ServerResponse.createByErrorMessage("用户信息更新失败");
     }
@@ -159,5 +159,13 @@ public class UserServiceImpl implements IUserService {
         }
         user.setPassword(StringUtils.EMPTY);
         return ServerResponse.createBySuccess(user);
+    }
+
+    //backend
+    public ServerResponse checkAdminRole(User user) {
+        if (user != null && user.getRole() == Const.Role.ROLE_ADMIN) {
+            return ServerResponse.createBySuccess();
+        }
+        return ServerResponse.createByError();
     }
 }
